@@ -1,0 +1,171 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "indoor-mapping-pipeline/output/v1",
+  "title": "IndoorScanOutput",
+  "description": "Complete output contract for one capture — all tiers",
+  "type": "object",
+  "required": ["scan_id", "tier", "capture_route", "rooms", "stitched_plan", "confidence_summary"],
+  "properties": {
+    "scan_id": {
+      "type": "string",
+      "description": "Unique identifier derived from input folder name"
+    },
+    "schema_version": { "type": "string", "example": "1.0.0" },
+    "tier": {
+      "type": "string",
+      "enum": ["lidar", "video", "photo"],
+      "description": "Input data tier used"
+    },
+    "capture_route": {
+      "type": "string",
+      "enum": ["route1_custom_app", "route2_stock_protocol"]
+    },
+    "pipeline_version": { "type": "string" },
+    "processing_time_seconds": { "type": "number" },
+    "rooms": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["room_id", "floor_area_m2", "ceiling_height_m", "walls", "openings"],
+        "properties": {
+          "room_id": { "type": "string" },
+          "floor_area_m2": { "type": "number" },
+          "floor_area_confidence": { "$ref": "#/$defs/ConfidenceInterval" },
+          "ceiling_height_m": { "type": "number" },
+          "ceiling_height_confidence": { "$ref": "#/$defs/ConfidenceInterval" },
+          "walls": {
+            "type": "array",
+            "items": { "$ref": "#/$defs/Wall" }
+          },
+          "openings": {
+            "type": "array",
+            "items": { "$ref": "#/$defs/Opening" }
+          },
+          "damage_regions": {
+            "type": "array",
+            "items": { "$ref": "#/$defs/DamageRegion" }
+          },
+          "concealed_damage_flags": {
+            "type": "array",
+            "items": { "$ref": "#/$defs/ConcealedDamageFlag" }
+          },
+          "scope_line_items": {
+            "type": "array",
+            "items": { "$ref": "#/$defs/ScopeLineItem" }
+          }
+        }
+      }
+    },
+    "stitched_plan": {
+      "type": "object",
+      "properties": {
+        "room_count": { "type": "integer" },
+        "total_floor_area_m2": { "type": "number" },
+        "adjacency_graph": {
+          "type": "array",
+          "description": "List of [room_id_a, room_id_b] pairs sharing a wall",
+          "items": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 2,
+            "maxItems": 2
+          }
+        },
+        "rendered_plan_path": { "type": "string" },
+        "floor_plan_polygon_meters": {
+          "type": "array",
+          "description": "GeoJSON-like polygon of full property in world metres",
+          "items": {
+            "type": "array",
+            "items": { "type": "number" },
+            "minItems": 2,
+            "maxItems": 2
+          }
+        }
+      }
+    },
+    "confidence_summary": {
+      "type": "object",
+      "properties": {
+        "tier": { "type": "string" },
+        "wall_length_tolerance_pct": { "type": "number" },
+        "ceiling_height_tolerance_cm": { "type": "number" },
+        "opening_width_tolerance_cm": { "type": "number" }
+      }
+    }
+  },
+  "$defs": {
+    "ConfidenceInterval": {
+      "type": "object",
+      "properties": {
+        "value": { "type": "number" },
+        "lower": { "type": "number" },
+        "upper": { "type": "number" },
+        "unit": { "type": "string" }
+      },
+      "required": ["value", "lower", "upper", "unit"]
+    },
+    "Wall": {
+      "type": "object",
+      "properties": {
+        "wall_id": { "type": "string" },
+        "length_m": { "type": "number" },
+        "length_confidence": { "$ref": "#/$defs/ConfidenceInterval" },
+        "start_point": {
+          "type": "array", "items": { "type": "number" }, "minItems": 2, "maxItems": 2
+        },
+        "end_point": {
+          "type": "array", "items": { "type": "number" }, "minItems": 2, "maxItems": 2
+        },
+        "surface_id": { "type": "string" }
+      }
+    },
+    "Opening": {
+      "type": "object",
+      "properties": {
+        "opening_id": { "type": "string" },
+        "type": { "type": "string", "enum": ["door", "window", "archway", "unknown"] },
+        "width_m": { "type": "number" },
+        "width_confidence": { "$ref": "#/$defs/ConfidenceInterval" },
+        "height_m": { "type": "number" },
+        "wall_id": { "type": "string" },
+        "position_along_wall_m": { "type": "number" }
+      }
+    },
+    "DamageRegion": {
+      "type": "object",
+      "properties": {
+        "damage_id": { "type": "string" },
+        "class": { "type": "string" },
+        "surface_id": { "type": "string" },
+        "area_m2": { "type": "number" },
+        "bounding_box_px": {
+          "type": "array", "items": { "type": "integer" }, "minItems": 4, "maxItems": 4
+        },
+        "confidence_score": { "type": "number", "minimum": 0, "maximum": 1 },
+        "frame_id": { "type": "string" }
+      }
+    },
+    "ConcealedDamageFlag": {
+      "type": "object",
+      "properties": {
+        "flag_id": { "type": "string" },
+        "class": { "type": "string" },
+        "trigger_damage_id": { "type": "string" },
+        "rule_fired": { "type": "string" },
+        "explanation": { "type": "string" },
+        "location_description": { "type": "string" }
+      }
+    },
+    "ScopeLineItem": {
+      "type": "object",
+      "properties": {
+        "item_id": { "type": "string" },
+        "description": { "type": "string" },
+        "surface_id": { "type": "string" },
+        "damage_id": { "type": "string" },
+        "estimated_area_m2": { "type": "number" }
+      }
+    }
+  }
+}

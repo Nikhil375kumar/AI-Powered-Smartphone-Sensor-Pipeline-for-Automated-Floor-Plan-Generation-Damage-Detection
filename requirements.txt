@@ -1,0 +1,42 @@
+# ─── Core Scientific Stack ────────────────────────────────────────────────────
+numpy>=1.24.0
+scipy>=1.11.0
+pandas>=2.0.0
+
+# ─── Computer Vision ──────────────────────────────────────────────────────────
+opencv-python>=4.8.0
+Pillow>=10.0.0
+scikit-image>=0.21.0
+
+# ─── 3D Point Cloud Processing ────────────────────────────────────────────────
+open3d>=0.17.0
+
+# ─── 2D Geometry ──────────────────────────────────────────────────────────────
+shapely>=2.0.0
+matplotlib>=3.7.0
+
+# ─── Deep Learning (damage detection + monocular depth) ───────────────────────
+torch>=2.0.0
+torchvision>=0.15.0
+# Install with: pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
+# For CPU-only: pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+ultralytics>=8.0.0            # YOLOv8 for damage detection
+
+# ─── Configuration & Environment ──────────────────────────────────────────────
+python-dotenv>=1.0.0
+pydantic>=2.0.0
+pydantic-settings>=2.0.0
+PyYAML>=6.0.0
+
+# ─── CLI & Logging ────────────────────────────────────────────────────────────
+typer[all]>=0.9.0
+rich>=13.0.0
+loguru>=0.7.0
+groq>=0.9.0                   # Free-tier LLM API (get key at console.groq.com)
+
+# ─── Data I/O ─────────────────────────────────────────────────────────────────
+tqdm>=4.65.0
+
+# ─── Testing ──────────────────────────────────────────────────────────────────
+pytest>=7.4.0
+pytest-cov>=4.1.0

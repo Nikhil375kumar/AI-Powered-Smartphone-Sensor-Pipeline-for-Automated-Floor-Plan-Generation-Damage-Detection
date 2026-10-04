@@ -1,0 +1,93 @@
+# ─── Environment & Secrets ───────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ─── Python ──────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.pyd
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+.installed.cfg
+
+# ─── Virtual Environments ────────────────────────────────────────────────────
+venv/
+env/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+.conda/
+
+# ─── Model Weights & Large Binaries ──────────────────────────────────────────
+models/
+weights/
+*.pt
+*.pth
+*.onnx
+*.bin
+*.safetensors
+*.h5
+*.pkl
+
+# ─── Generated Outputs ───────────────────────────────────────────────────────
+outputs/
+results/
+runs/
+cache/
+.cache/
+
+# ─── Dataset (large files — use DVC or GDrive link) ──────────────────────────
+Dataset/
+data/raw/
+*.mp4
+*.avi
+*.mov
+
+# ─── Jupyter & IPython ───────────────────────────────────────────────────────
+.ipynb_checkpoints/
+*.ipynb
+
+# ─── IDEs ────────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# ─── OS ──────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ─── Testing & Coverage ──────────────────────────────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/
+*.cover
+coverage.xml
+
+# ─── Hydra / Config outputs ──────────────────────────────────────────────────
+outputs/
+multirun/
+
+# ─── Logs ────────────────────────────────────────────────────────────────────
+logs/
+*.log
+
+# ─── Temp ────────────────────────────────────────────────────────────────────
+tmp/
+temp/
+scratch/
+.env
+__pycache__/
+venv/
+.venv/
